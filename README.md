@@ -29,8 +29,8 @@ Built for people who want Claude to act on their calendar, email, tasks, and not
 ## Install
 
 ```bash
-git clone https://github.com/davidianstyle/openbrain-template.git ~/Code/vault
-cd ~/Code/vault
+git clone https://github.com/davidianstyle/openbrain-template.git ~/OpenBrain
+cd ~/OpenBrain
 ./bootstrap/setup.sh
 ```
 
@@ -73,7 +73,7 @@ Each script is idempotent — safe to re-run.
 ### Vault layout
 
 ```
-~/Code/vault/
+~/OpenBrain/
 ├── + Inbox/                  # capture first, triage later
 ├── + Spaces/                 # MOCs (Maps of Content)
 │   └── People.md             # people MOC (created on demand)
