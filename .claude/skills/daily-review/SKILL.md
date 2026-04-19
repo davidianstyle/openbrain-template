@@ -32,9 +32,9 @@ This skill is **interactive by design**. Ask clarifying questions with `AskUserQ
 
 Gather evidence of what actually happened, independent of what was planned. **Every bullet below is independent — fan out all Asana / gcal / gmail / slack / git / glob calls in a single tool-use block. Do not serialize.**
 
-- **Asana churn.** For both `asana_personal` and `asana_work`:
-  - `asana_search_tasks` with `completed_on=<date>` → tasks completed today.
-  - `asana_get_my_tasks` for currently assigned, incomplete tasks (to get the live outstanding list).
+- **Asana churn (check completions first).** For both `asana_personal` and `asana_work`:
+  - `asana_search_tasks` with `completed_on=<date>` → tasks the user already marked complete today. These are **pre-confirmed Done** — they skip the interactive loop entirely.
+  - `asana_get_my_tasks` for currently assigned, incomplete tasks (to get the live outstanding list). Only tasks still incomplete here are candidates for the interactive check-off in step 4.
 - **Calendar reality.** For each `gcal_*` MCP, `gcal_list_events` for the date. Compare to the morning brief's planned timeline — flag events that were added, moved, or canceled after the brief was written.
 - **Mail sent.** For each `gmail_*` MCP, `gmail_search_messages` with `in:sent after:<date> before:<date+1>`. Used only to confirm whether "needs a reply" items got handled.
 - **Slack sent.** For each `slack_*` MCP, use `conversations_search_messages` scoped to the user's user for the day if available, otherwise skip — this is best-effort confirmation only.
@@ -54,7 +54,7 @@ Also walk `+ Atlas/Interactions/<date>-*.md` and any person notes touched today 
 
 ### 4. Interactive check-off (the main loop)
 
-For each **Outstanding** item, prompt the user one at a time using `AskUserQuestion`. Batch related items into a single question when possible (multiple small Asana tasks with similar options). Typical question shape:
+Asana tasks that were already marked complete (from step 2) go straight into the Done bucket — do not ask the user about them again. For each remaining **Outstanding** item, prompt the user one at a time using `AskUserQuestion`. Batch related items into a single question when possible (multiple small Asana tasks with similar options). Typical question shape:
 
 - Subject: the item in 1 line (task name, or "Reply to <sender> re: <subject>")
 - Options: `Done`, `Still open — keep as-is`, `Reschedule`, `Drop it`, `Other (explain)`
