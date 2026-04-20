@@ -30,13 +30,13 @@ This skill is **interactive by design**. Ask clarifying questions with `AskUserQ
 
 ### 2. Pull actual activity for the day
 
-Gather evidence of what actually happened, independent of what was planned. **Every bullet below is independent — fan out all Asana / gcal / gmail / slack / git / glob calls in a single tool-use block. Do not serialize.**
+Gather evidence of what actually happened, independent of what was planned. **Every bullet below is independent — fan out all Asana / google / slack / git / glob calls in a single tool-use block. Do not serialize.**
 
 - **Asana churn (check completions first).** For both `asana_personal` and `asana_work`:
   - `asana_search_tasks` with `completed_on=<date>` → tasks the user already marked complete today. These are **pre-confirmed Done** — they skip the interactive loop entirely.
   - `asana_get_my_tasks` for currently assigned, incomplete tasks (to get the live outstanding list). Only tasks still incomplete here are candidates for the interactive check-off in step 4.
-- **Calendar reality.** For each `google_*` MCP, `calendar_list_events` for the date. Compare to the morning brief's planned timeline — flag events that were added, moved, or canceled after the brief was written.
-- **Mail sent.** For each `google_*` MCP, `gmail_search_emails` with `in:sent after:<date> before:<date+1>`. Used only to confirm whether "needs a reply" items got handled.
+- **Calendar reality.** For each `google_*` MCP, `google_calendar_list_events` for the date. Compare to the morning brief's planned timeline — flag events that were added, moved, or canceled after the brief was written.
+- **Mail sent.** For each `google_*` MCP, `google_gmail_search_emails` with `in:sent after:<date> before:<date+1>`. Used only to confirm whether "needs a reply" items got handled.
 - **Slack sent.** For each `slack_*` MCP, use `conversations_search_messages` scoped to the user's user for the day if available, otherwise skip — this is best-effort confirmation only.
 - **Vault activity.** `git log --since="<date> 00:00" --until="<date> 23:59" --name-only` from the repo root to see which notes were touched today. Filter out auto-commit noise.
 - **Interaction notes created today.** Glob `+ Atlas/Interactions/<date>-*.md` — these represent meetings/calls that actually happened.
@@ -116,7 +116,7 @@ Only after confirmation:
   - `## Needs a reply / open loops` — drop items the user just confirmed as Done; keep Outstanding/Carried-forward items; add any New follow-ups that became Asana tasks today.
   - `## Today — <Day YYYY-MM-DD>` — replace the "Pivot" line with a brief end-of-day status (e.g. `**Wrapped:** 7 done, 3 carried, 2 new`) and trim the timeline to events that have already occurred. The next morning's `/daily-brief` run will rebuild this section fully.
   - Update the frontmatter `updated:` field to today.
-  - Never touch `## This week`, `## Top priorities`, or `## Quick links` — those are owned by `/weekly-review` and `/daily-brief`.
+  - Never touch `## This week`, `## Top priorities`, or `## Quick links` — those are owned by `/weekly-review` and `/daily-brief`. If `Dashboard.md` is missing, log a warning and skip this step.
 
 ### 7. Final report
 

@@ -2,7 +2,7 @@
 
 This vault is **{{USER_NAME}}'s OpenBrain**: a personal LYT (Linking Your Thinking) knowledge base where Claude Code is a first-class collaborator. Read this file at the start of every session in this vault.
 
-> This file was generated from the [openbrain-template](https://github.com/davidianstyle/openbrain-template) template. Re-run `bootstrap/setup.sh` to regenerate account tables after adding/removing services.
+> This file was generated from the [openbrain-template](https://github.com/davidianstyle/openbrain-template) template. Re-run `bootstrap/setup.sh` to regenerate account tables after adding/removing services, or run `bootstrap/lib/add-*.sh` for incremental changes.
 
 ## 1. Identity and structure
 
@@ -213,10 +213,12 @@ When matching a name or address to an existing person note:
 
 ### Interaction linking contract
 
-When an interaction note is created (via `/capture-meeting` or `/log-note`):
+When an interaction note is created (via `/capture-meeting`, `/log-interaction`, or auto-logged by `/people-sync` and `/process-inbox`; note that `/log-note` does **not** trigger this contract):
 - The interaction's `people:` frontmatter array lists `[[wikilinks]]` to each participant's person note.
 - Each linked person note gets its `last_contact:` updated to the interaction date, and a new bullet under its `## Threads` section pointing back to the interaction note.
 - Commitments extracted from the interaction land under `## Open commitments` (theirs / mine) in each linked person note.
+
+**Auto-logged interactions.** `/people-sync` and `/process-inbox` automatically create lightweight interaction notes for direct email threads and Slack DMs/mentions involving known people (those with notes in `+ Atlas/People/`). These auto-logged notes have an auto-extracted summary and leave Decisions/Commitments/Follow-ups sections empty. Mailing lists, Google Groups, CC-only threads, bot addresses, and observer-only threads are excluded. Deduplication is by `source:` frontmatter — one interaction note per thread, and richer notes from `/capture-meeting` or `/log-interaction` always take precedence.
 
 ## 13. Chief of Staff skills
 
@@ -239,11 +241,12 @@ Skills live in `.claude/skills/<name>/SKILL.md` (vault-local, portable with the 
 | `/log-place` | Create a place note at `+ Atlas/Places/`. |
 | `/log-organization` | Create an organization note with key people and places at `+ Atlas/Organizations/`. |
 | `/log-quote` | Save a quote with attribution and source link at `+ Atlas/Quotes/`. |
-| `/follow-up-draft` | Draft a reply/nudge for the right account. Saves as draft, never sends. |
+| `/follow-up-draft` | Draft a reply/nudge for the right account. Saves as draft, never sends. Also invoked in batch by `/daily-brief` and `/process-inbox` for actionable "Needs a reply" items. |
 | `/what-am-i-missing` | Surface overdue tasks, stale commitments, cadence misses, unanswered mail. |
 | `/people-audit` | Cadence health report + regenerate `+ Spaces/People.md` grouping. |
 | `/people-sync` | Discovery pass across Gmail/Calendar/Slack — auto-updates `last_contact` on known people, stages unknowns in `+ Inbox/people-candidates/`, proposes alias merges. |
 | `/weekly-review` | Monday synthesis → `+ Atlas/Weekly Reviews/<ISO-week>.md`. |
+| `/sync-template` | Pull latest changes from upstream openbrain-template, diff against vault, interactively apply improvements. |
 | `/asana` | Quick view of tasks due in the next 7 days across configured workspaces, with interactive check-off. |
 
 Skills are markdown procedures only — they describe which MCP tools to call and which files to read/write. They do not execute code; Claude reads the SKILL.md and performs the steps.

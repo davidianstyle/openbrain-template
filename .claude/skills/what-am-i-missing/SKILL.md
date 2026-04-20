@@ -18,7 +18,7 @@ A forcing function for things that have fallen off the user's radar.
    - `monthly` → overdue at 32 days
    - `quarterly` → overdue at 95 days
    - `asneeded` → never overdue
-4. **Unanswered mail where the user is next actor.** For each `google_*` MCP, `gmail_search_emails` with `is:unread newer_than:7d in:inbox -from:me` AND the sender is not a known mailing list. Apply a simple "asked a question" heuristic: subject contains `?` or the message body ends with `?`. (Best-effort; the user can correct.)
+4. **Unanswered mail where the user is next actor.** For each `google_*` MCP, `google_gmail_search_emails` with `is:unread newer_than:7d in:inbox -from:me` AND the sender is not a known mailing list. Apply a simple "asked a question" heuristic: subject contains `?` or the message body ends with `?`. (Best-effort; the user can correct.)
 5. **Compose report.**
    - **Overdue tasks** (by workspace)
    - **Stale commitments** (by person)

@@ -31,12 +31,12 @@ description: Monday synthesis — write + Atlas/Weekly Reviews/<ISO-week>.md fro
    - **People sync summary** — bucket counts from step 3, plus any alias merges awaiting confirmation.
 5. **Link from Home.** Ensure `Home.md`'s "Recent weekly reviews" section (if present) gets the new entry; otherwise skip.
 6. **Refresh `Dashboard.md` week-ahead view (optional).** If a `Dashboard.md` file exists at the vault root, this skill owns its forward-looking sections — rebuild them from fresh Asana + calendar data for the **upcoming** week (Mon → Sun starting tomorrow if running on a Sunday/Monday morning, otherwise the next 7 days from today). **Skip this step entirely if `Dashboard.md` does not exist.** Procedure:
-   - Gather (in parallel with the rest of the review where possible): 7-day calendar sweep across all `google_*` accounts (via `calendar_list_events`); `asana_get_my_tasks` for each configured workspace with `completed_since=now` and post-filter to `due_on` within the upcoming-week window.
+   - Gather (in parallel with the rest of the review where possible): 7-day calendar sweep across all `google_*` accounts (via `google_calendar_list_events`); `asana_get_my_tasks` for each configured workspace with `completed_since=now` and post-filter to `due_on` within the upcoming-week window.
    - Replace the body of these H2 sections in `Dashboard.md` in place (find heading → overwrite to next H2 or EOF):
-     - `## This week (...)` — update the heading dates to the new window. Group by **work meetings that matter** (filter to events with attendees > 1; collapse auto-blocking like Reclaim "Busy" rows and out-of-office noise) and **personal anchors** (recurring family / community / 1:1 events).
-     - `## Top priorities` — checkbox bullets with `[[wikilinks]]` to people where natural, sorted by `due_on`. Sub-list per workspace if multiple workspaces are configured.
+     - `## This week (...)` — update the heading dates to the new window. Two sub-tables: **Work — meetings that matter** (filter to events with attendees > 1; collapse auto-blocking like Reclaim "Busy" rows and out-of-office noise) and **Personal anchors** (recurring family / community / 1:1 events).
+     - `## Top priorities` — two sub-lists: **Work — due this week** and **Personal — due this week**, each as checkbox bullets with `[[wikilinks]]` to people where natural, sorted by `due_on`.
    - Update the frontmatter `updated:` field to today.
-   - Never touch `## Today`, `## Needs a reply / open loops`, `## People past cadence`, `## Delegated / FYI`, or `## Quick links` — those are owned by `/daily-brief` (or static).
+   - Never touch `## Today`, `## Needs a reply / open loops`, `## People past cadence`, `## Delegated / FYI`, or `## Quick links` — those are owned by `/daily-brief` (or static). If `Dashboard.md` is missing, log a warning and skip this step.
 
 ## Output
 

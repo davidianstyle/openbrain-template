@@ -22,7 +22,7 @@ description: Draft a follow-up email or Slack message for a given person or thre
 3. **Gather context.** Pull the last 1–2 interactions from `+ Atlas/Interactions/`, the open commitments section from the person note, and the last email/Slack thread excerpt.
 4. **Draft the message.** Match the user's voice — direct, terse, no filler. Lead with the ask. For email, include subject line. For Slack, no subject.
 5. **Save as draft.**
-   - **Email:** call `gmail_draft_email` on the matching `google_*` MCP. Report the draft id.
+   - **Email:** call `google_gmail_draft_email` on the matching `google_*` MCP. Report the draft id.
    - **Slack:** call `slack_send_message_draft` (or equivalent) on the matching `slack_*` MCP. Report the draft/scheduled id.
 6. **Log vault-side trail.** If `$1` resolved to a person note, append a bullet under its `## Threads` section so `/what-am-i-missing` and future lookups can see the pending draft:
    `- <YYYY-MM-DD> · drafted follow-up (<channel>:<draft-id>) — <intent or one-line gist>`

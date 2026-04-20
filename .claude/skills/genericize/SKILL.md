@@ -33,6 +33,7 @@ The vault is the working bench; the template is what other people clone. Anythin
 **Out of scope** (never port):
 
 - Anything under `+ Atlas/`, `+ Spaces/`, `+ Inbox/`, `+ Sources/`, `+ Archive/` — these are content, not infrastructure
+- Vault-specific one-off bootstrap scripts (e.g. `bootstrap-google-meet.sh`) — the template has a more general `bootstrap/` wizard
 - `.obsidian/workspace.json`, `.obsidian/plugins/*` — per-machine state and plugin internals
 - `~/.claude/projects/.../memory/MEMORY.md` (auto-memory) — never touch
 - `~/.config/openbrain/.env` — never read, never touch
