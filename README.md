@@ -134,7 +134,7 @@ One stdio MCP server per (service × account) pair, so routing is explicit:
 - **Google Meet** (`@dtannen/google-meet-mcp`) — one per Google account
 - **Google Drive/Docs/Sheets** (`@a-bonus/google-docs-mcp`) — one per Google account
 - **Slack** (`slack-mcp-server`) — one per workspace
-- **Asana** (`@roychri/mcp-server-asana`) — personal + work
+- **Asana** (`asana-mcp`) — personal + work
 - **Fathom** (`@lengelhard/fathom-mcp`) — single instance
 
 All launched via `~/.config/openbrain/lib/*-mcp.sh` wrappers that source `~/.config/openbrain/.env`.
