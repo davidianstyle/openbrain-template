@@ -254,7 +254,7 @@ Skills are markdown procedures only — they describe which MCP tools to call an
 
 ## 14. Tool usage notes
 
-- **Slack write operations:** The local `slack_*` MCPs support `conversations_add_message` when `SLACK_MCP_ADD_MESSAGE_TOOL=true` is set in the launcher (already set in the bundled `slack-mcp.sh`). Use this tool for sending messages — do not fall back to the deprecated `mcp__claude_ai_Slack__*` remote connector. Always confirm the `conversations_add_message` tool is available before attempting to send.
+- **Slack write operations:** The local `slack_*` MCPs support `slack_conversations_add_message` natively. Use this tool for sending messages — do not fall back to the deprecated `mcp__claude_ai_Slack__*` remote connector.
 - **Before recommending any Asana task, Slack message, or Google Doc edit**, verify the target still exists (the state may have changed since the last session).
 
 ## 15. Deployment

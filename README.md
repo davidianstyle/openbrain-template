@@ -121,6 +121,8 @@ Each script is idempotent — safe to re-run.
 | `/people-audit` | Cadence health report + regenerate People MOC |
 | `/people-sync` | Discovery pass across Gmail/Calendar/Slack to find unknown people |
 | `/weekly-review` | Monday synthesis |
+| `/push-openbrain-template` | Genericize vault improvements and open a PR against the template repo |
+| `/pull-openbrain-template` | Pull latest template changes into the vault interactively |
 | `/asana` | Quick view of upcoming Asana tasks with interactive check-off |
 
 Skills are markdown procedures — Claude reads the SKILL.md and performs the steps. No code execution.
@@ -129,13 +131,10 @@ Skills are markdown procedures — Claude reads the SKILL.md and performs the st
 
 One stdio MCP server per (service × account) pair, so routing is explicit:
 
-- **Gmail** (`@gongrzhe/server-gmail-autoauth-mcp`) — one per Google account
-- **Google Calendar** (`@cocal/google-calendar-mcp`) — one per Google account
-- **Google Meet** (`@dtannen/google-meet-mcp`) — one per Google account
-- **Google Drive/Docs/Sheets** (`@a-bonus/google-docs-mcp`) — one per Google account
-- **Slack** (`slack-mcp-server`) — one per workspace
+- **Google** (`google-mcp`) — Gmail, Calendar, Meet, Drive, Docs, Sheets, Slides — one consolidated server per Google account
+- **Slack** (`slack-mcp`) — one per workspace
 - **Asana** (`asana-mcp`) — personal + work
-- **Fathom** (`@lengelhard/fathom-mcp`) — single instance
+- **Fathom** (`fathom-mcp`) — single instance
 
 All launched via `~/.config/openbrain/lib/*-mcp.sh` wrappers that source `~/.config/openbrain/.env`.
 
