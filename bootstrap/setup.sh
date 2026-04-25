@@ -230,6 +230,35 @@ without manual git commands.
 
 EOF
 if yes_no "Enable auto git sync hooks?" n; then
+  # Ensure a git remote is configured for push/pull to work
+  if ! git -C "$REPO_ROOT" rev-parse --abbrev-ref --symbolic-full-name @{u} >/dev/null 2>&1; then
+    cat <<EOF
+
+Auto sync needs a git remote to push to. Let's set one up.
+
+You can create a new private repo on GitHub, or use an existing one.
+
+EOF
+    if command -v gh >/dev/null 2>&1; then
+      REPO_NAME="$(prompt 'GitHub repo name (e.g. my-brain)' 'my-brain')"
+      info "Creating private repo and pushing..."
+      gh repo create "$REPO_NAME" --private --source="$REPO_ROOT" --push 2>&1 && ok "remote created: $REPO_NAME" \
+        || warn "repo creation failed — you can set up a remote manually later"
+    else
+      REMOTE_URL="$(prompt 'Git remote URL (e.g. git@github.com:you/my-brain.git, blank to skip)')"
+      if [[ -n "$REMOTE_URL" ]]; then
+        git -C "$REPO_ROOT" remote add origin "$REMOTE_URL" 2>/dev/null \
+          || git -C "$REPO_ROOT" remote set-url origin "$REMOTE_URL"
+        git -C "$REPO_ROOT" push -u origin main 2>&1 && ok "pushed to $REMOTE_URL" \
+          || warn "push failed — check your remote URL and credentials"
+      else
+        warn "no remote configured — auto sync hooks will commit locally but won't push"
+      fi
+    fi
+  else
+    ok "git remote already configured"
+  fi
+
   SETTINGS_FILE="$REPO_ROOT/.claude/settings.json"
   mkdir -p "$(dirname "$SETTINGS_FILE")"
   "$PYTHON_BIN" - "$SETTINGS_FILE" "$REPO_ROOT" <<'PY'
@@ -241,34 +270,28 @@ repo_root = sys.argv[2]
 
 data = {}
 if settings_path.exists():
-    data = json.loads(settings_path.read_text())
+    try:
+        data = json.loads(settings_path.read_text())
+    except Exception:
+        pass
 
-data["hooks"] = {
-    "SessionStart": [
-        {
-            "hooks": [
-                {
-                    "type": "command",
-                    "command": f"{repo_root}/.openbrain/on-start.sh",
-                    "timeout": 30,
-                    "statusMessage": "OpenBrain: pulling latest"
-                }
-            ]
-        }
-    ],
-    "Stop": [
-        {
-            "hooks": [
-                {
-                    "type": "command",
-                    "command": f"{repo_root}/.openbrain/on-stop.sh",
-                    "timeout": 120,
-                    "statusMessage": "OpenBrain: syncing to git"
-                }
-            ]
-        }
-    ]
-}
+hooks = data.setdefault("hooks", {})
+hooks["SessionStart"] = [{
+    "hooks": [{
+        "type": "command",
+        "command": f"{repo_root}/.openbrain/on-start.sh",
+        "timeout": 30,
+        "statusMessage": "OpenBrain: pulling latest"
+    }]
+}]
+hooks["Stop"] = [{
+    "hooks": [{
+        "type": "command",
+        "command": f"{repo_root}/.openbrain/on-stop.sh",
+        "timeout": 120,
+        "statusMessage": "OpenBrain: syncing to git"
+    }]
+}]
 
 settings_path.write_text(json.dumps(data, indent=2) + "\n")
 PY
@@ -311,9 +334,6 @@ Next steps:
        ${_C_CYAN}./bootstrap/lib/add-google-account.sh jane@newdomain.com${_C_RESET}
        ${_C_CYAN}./bootstrap/lib/add-slack-workspace.sh newteam${_C_RESET}
        ${_C_CYAN}./bootstrap/lib/add-asana.sh personal${_C_RESET}
-
-  5. (Optional) Push this vault to a private git remote for cross-device sync:
-       ${_C_CYAN}gh repo create my-vault --private --source=. --push${_C_RESET}
 
 See README.md and bootstrap/README.md for troubleshooting.
 EOF
