@@ -12,7 +12,7 @@ log() { printf '[on-start] %s\n' "$*" >&2; }
 
 # Only pull if the repo has a remote tracking branch
 if git rev-parse --abbrev-ref --symbolic-full-name @{u} >/dev/null 2>&1; then
-  git pull --rebase 2>&1 || log "pull failed (non-fatal)"
+  git pull --rebase --autostash 2>&1 || log "pull failed (non-fatal)"
 else
   log "no upstream configured, skipping pull"
 fi

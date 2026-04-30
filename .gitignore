@@ -3,6 +3,7 @@
 
 # Obsidian workspace state (machine-local)
 .obsidian/workspace*.json
+.obsidian/graph.json
 .obsidian/cache
 .obsidian/plugins/*/data.json
 .trash/
