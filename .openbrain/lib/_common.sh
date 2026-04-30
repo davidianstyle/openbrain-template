@@ -113,12 +113,12 @@ require_env() {
 # Auto-clone and build an MCP server repo if the built artifact is missing.
 # Usage: ensure_mcp_server <repo-name>
 # E.g.:  ensure_mcp_server asana-mcp
-#   → clones github.com/davidianstyle/asana-mcp to ~/Code/asana-mcp
+#   → clones github.com/davidianstyle/asana-mcp to ~/asana-mcp
 #   → runs npm install && npm run build
 #   → expects dist/index.js to exist after build
 ensure_mcp_server() {
   local name="$1"
-  local repo_dir="$HOME/Code/$name"
+  local repo_dir="$HOME/$name"
   local server="$repo_dir/dist/index.js"
 
   if [[ -f "$server" ]]; then

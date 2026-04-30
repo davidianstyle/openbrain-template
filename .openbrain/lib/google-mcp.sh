@@ -9,7 +9,7 @@ SLUG="${1:?usage: google-mcp.sh <slug>}"
 TOKEN_DIR="$HOME/.config/openbrain/tokens"
 OAUTH_CLIENT="$TOKEN_DIR/oauth-client.json"
 CREDS_FILE="$TOKEN_DIR/google-${SLUG}-credentials.json"
-SERVER="$HOME/Code/google-mcp/dist/index.js"
+SERVER="$HOME/google-mcp/dist/index.js"
 
 [[ -f "$OAUTH_CLIENT" ]] || die "shared OAuth client missing: $OAUTH_CLIENT (run bootstrap/lib/add-google-account.sh $SLUG)"
 [[ -f "$CREDS_FILE" ]] || die "per-account credentials missing: $CREDS_FILE (run add-google-account.sh)"

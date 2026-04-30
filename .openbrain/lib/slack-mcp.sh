@@ -5,7 +5,7 @@ set -euo pipefail
 source "$(dirname "${BASH_SOURCE[0]}")/_common.sh"
 
 SLUG="${1:?usage: slack-mcp.sh <slug>}"
-SERVER="$HOME/Code/slack-mcp/dist/index.js"
+SERVER="$HOME/slack-mcp/dist/index.js"
 
 # Slug → env var name: uppercased, - → _
 TOKEN_VAR="SLACK_TOKEN_$(echo "$SLUG" | tr '[:lower:]-' '[:upper:]_')"
